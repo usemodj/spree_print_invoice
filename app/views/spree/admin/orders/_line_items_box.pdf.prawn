@@ -9,21 +9,16 @@ end
 # Line Items
 bounding_box [0,cursor], :width => 540, :height => 430 do
   move_down 2
-  header =  [Prawn::Table::Cell.new( :text => t(:sku), :font_style => :bold),
-                Prawn::Table::Cell.new( :text => t(:item_description), :font_style => :bold ) ]
-  header <<  Prawn::Table::Cell.new( :text => t(:options), :font_style => :bold ) 
-  header <<  Prawn::Table::Cell.new( :text => t(:price), :font_style => :bold ) unless @hide_prices
-  header <<  Prawn::Table::Cell.new( :text => t(:qty), :font_style => :bold, :align => 1 )
-  header <<  Prawn::Table::Cell.new( :text => t(:total), :font_style => :bold ) unless @hide_prices
+  header =  [t(:sku),t(:item_description)]
+  header <<  t(:options)
+  header <<  t(:price) unless @hide_prices
+  header <<  t(:qty)
+  header <<  t(:total) unless @hide_prices
     
-  table [header],
-    :position           => :center,
-    :border_width => 1,
-    :vertical_padding   => 2,
-    :horizontal_padding => 6,
-    :font_size => 9,
-    :column_widths => @column_widths ,
-    :align => @align
+  table [header], :cell_style => {:font_style => :bold,:border_width => 1,:padding => [2,6,2,6],:size => 9},
+    :position  => :center,
+    :column_widths => @column_widths
+    
 
   move_down 4
 
@@ -40,21 +35,16 @@ bounding_box [0,cursor], :width => 540, :height => 430 do
     end
 
 
-    table content,
-      :position           => :center,
-      :border_width => 0.5,
-      :vertical_padding   => 5,
-      :horizontal_padding => 6,
-      :font_size => 9,
-      :column_widths => @column_widths ,
-      :align => @align
-  end
-
-  font "Helvetica", :size => 9
-
-  bounding_box [20,cursor  ], :width => 400 do
-    render :partial => "bye" unless @hide_prices
-  end
+    table content, :cell_style => {:border_width => 0.5, :padding => [5,6,5,6],:size => 9},
+          :position => :center,
+          :column_widths => @column_widths 
+      end
+    
+      font "Helvetica", :size => 9
+    
+      bounding_box [20,cursor  ], :width => 400 do
+        render :partial => "bye" unless @hide_prices
+      end
 
   render :partial => "totals" unless @hide_prices
   
